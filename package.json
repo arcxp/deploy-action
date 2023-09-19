@@ -1,0 +1,25 @@
+{
+  "name": "deploy-action",
+  "version": "1.0.0",
+  "description": "A GitHub Action which allows for deployments to the Arc XP platform.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arcxp/deploy-action.git"
+  },
+  "keywords": [
+    "github",
+    "actions",
+    "arcxp",
+    "deploy"
+  ],
+  "author": "Mike Stemle <mike.stemle@washpost.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arcxp/deploy-action/issues"
+  },
+  "homepage": "https://github.com/arcxp/deploy-action#readme"
+}
