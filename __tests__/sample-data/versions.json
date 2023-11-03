@@ -1,0 +1,54 @@
+{
+  "lambdas": [
+    {
+      "FunctionName": "function-name-here",
+      "FunctionArn": "some-function-here",
+      "Runtime": "nodejs42.x",
+      "Role": "some-role-here",
+      "Handler": "src/index.serverless",
+      "CodeSize": 1234,
+      "Description": "",
+      "Timeout": 12,
+      "MemorySize": 123,
+      "LastModified": "2023-01-02T16:31:06.000+0000",
+      "CodeSha256": "abc123",
+      "Version": "31",
+      "VpcConfig": {
+        "SubnetIds": [],
+        "SecurityGroupIds": [],
+        "VpcId": ""
+      },
+      "Environment": {
+        "Variables": {
+          "BUNDLE_URL": "https://s3.us-east-1.amazonaws.com/more-url-stuff",
+          "BUNDLE_NAME": "arcxp-demo-1-value",
+          "FUSION_RELEASE": "3.3.5"
+        }
+      },
+      "KMSKeyArn": null,
+      "TracingConfig": {
+        "Mode": "Active"
+      },
+      "MasterArn": null,
+      "RevisionId": "some-revision-here",
+      "State": null,
+      "StateReason": null,
+      "StateReasonCode": null,
+      "LastUpdateStatus": null,
+      "LastUpdateStatusReason": null,
+      "LastUpdateStatusReasonCode": null,
+      "PackageType": "Zip",
+      "SigningProfileVersionArn": null,
+      "SigningJobArn": null,
+      "Architectures": ["x86_64"],
+      "EphemeralStorage": {
+        "Size": 512
+      },
+      "SnapStart": {
+        "ApplyOn": "None",
+        "OptimizationStatus": "Off"
+      }
+    },
+    { "Version": "1" }
+  ]
+}

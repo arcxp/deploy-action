@@ -1,0 +1,36 @@
+---
+name: 'Deploy to Arc XP'
+description: 'This is an action which makes it convenient to deploy to Arc XP'
+author: 'Arc XP'
+branding:
+  icon: 'monitor'
+  color: 'purple'
+runs:
+  using: node20
+  main: dist/index.js
+inputs:
+  # Stuff we need for this action
+  org-id:
+    description: 'The organization ID for the Arc XP organization'
+    required: true
+  api-key:
+    description: 'The API key for Arc XP organization'
+    required: true
+  api-hostname:
+    description: 'The API hostname for Arc XP organization'
+    required: true
+  bundle-prefix:
+    description: 'The prefix for the bundle name, which is used to identify the bundle in the Arc XP UI'
+    required: true
+  artifact:
+    description: 'The artifact to be uploaded to Arc XP Fusion'
+    required: true
+    default: 'dist/fusion-bundle.zip'
+  retry-count:
+    description: 'The number of times to retry the deployment if it fails'
+    required: false
+    default: 10
+  retry-delay:
+    description: 'The number of seconds to wait between retries'
+    required: false
+    default: 5

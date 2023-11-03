@@ -1,0 +1,17 @@
+{
+  "bundle": {
+    "Location": "s3-url-here",
+    "key": "key",
+    "Key": "key",
+    "Bucket": "bucket-name-here",
+    "Size": 12345,
+    "tags": {
+      "extension": ".zip",
+      "uploaderUsername": "API",
+      "uploadedTimestamp": "1696525668225",
+      "uploaderDisplayName": "API"
+    },
+    "name": "{placeholder}",
+    "url": "s3-url-here"
+  }
+}
