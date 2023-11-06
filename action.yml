@@ -7,7 +7,7 @@ branding:
   color: 'purple'
 runs:
   using: node20
-  main: dist/index.js
+  main: dist/index.cjs
 inputs:
   # Stuff we need for this action
   org-id:
