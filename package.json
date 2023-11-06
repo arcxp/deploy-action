@@ -4,21 +4,18 @@
   "description": "A GitHub Action which allows for deployments to the Arc XP platform.",
   "main": "src/index.cjs",
   "scripts": {
+    "build": "esbuild src/index.cjs --bundle --platform=node --resolve-extensions=.cjs,.ts,.js --target=node20 --outfile=dist/index.cjs",
+    "clean": "rm -rf dist/*",
     "test": "jest"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/arcxp/deploy-action.git"
   },
-  "keywords": [
-    "github",
-    "actions",
-    "arcxp",
-    "deploy"
-  ],
+  "keywords": ["github", "actions", "arcxp", "deploy"],
   "author": "Mike Stemle <mike.stemle@washpost.com>",
   "license": "MIT",
-  "type":"commonjs",
+  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/arcxp/deploy-action/issues"
   },
