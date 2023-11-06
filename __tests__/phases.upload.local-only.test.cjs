@@ -14,7 +14,7 @@ const { describe, expect, test } = require('@jest/globals')
 const getRunContext = () => ({
   context: {
     sha: '7f7574fc',
-    head_ref: 'main',
+    ref_name: 'main',
   },
   orgId: core.getInput('org-id'),
   apiKey: core.getInput('api-key'),
