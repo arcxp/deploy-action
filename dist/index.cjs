@@ -22012,7 +22012,7 @@ var require_upload = __commonJS({
           }
         });
         const responseText = await response.text();
-        core2.debug("Response for upload call: ${responseText}");
+        core2.debug(`Response for upload call: ${responseText}`);
         return JSON.parse(responseText);
       } catch (error) {
         console.error("Failed!", error);

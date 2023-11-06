@@ -51,7 +51,7 @@ const uploadArtifact = async ({
     })
 
     const responseText = await response.text()
-    core.debug('Response for upload call: ${responseText}')
+    core.debug(`Response for upload call: ${responseText}`)
     return JSON.parse(responseText)
   } catch (error) {
     console.error('Failed!', error)
