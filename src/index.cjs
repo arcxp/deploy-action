@@ -64,13 +64,13 @@ const main = async () => {
   }
 
   // If we didn't identify the new version, that means we timed out. Boo.
-  if (newestVersion === undefined) {
+  if (!newestVersion) {
     return core.setFailed(
       `We retried ${runContext.retryCount} times with ${runContext.retryDelay} seconds between retries. Unfortunately, the new version does not appear to have deployed successfully. Please check logs, and contact support if this problem continues.\n\nYou may wish to retry this action again, but with debugging enabled.`,
     )
+  } else {
+    await promoteNewVersion(runContext, newestVersion)
   }
-
-  await promoteNewVersion(runContext, newestVersion)
 }
 
 main()

@@ -22113,14 +22113,15 @@ var main = async () => {
     await retryDelayWait();
     retriesRemaining -= 1;
   }
-  if (newestVersion === void 0) {
+  if (!newestVersion) {
     return core.setFailed(
       `We retried ${runContext.retryCount} times with ${runContext.retryDelay} seconds between retries. Unfortunately, the new version does not appear to have deployed successfully. Please check logs, and contact support if this problem continues.
 
 You may wish to retry this action again, but with debugging enabled.`
     );
+  } else {
+    await promoteNewVersion(runContext, newestVersion);
   }
-  await promoteNewVersion(runContext, newestVersion);
 };
 main();
 /*! Bundled license information:
