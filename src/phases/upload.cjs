@@ -40,6 +40,7 @@ const uploadArtifact = async ({
       name: 'bundle',
       filename: basename(artifact),
     })
+    core.debug(`Making call to upload ${artifact} to ${url}`)
     const response = await fetch(url, {
       method: 'POST',
       body: formData,
@@ -49,7 +50,9 @@ const uploadArtifact = async ({
       },
     })
 
-    return await response.json()
+    const responseText = await response.text()
+    core.debug('Response for upload call: ${responseText}')
+    return JSON.parse(responseText)
   } catch (error) {
     console.error('Failed!', error)
     return core.setFailed(error.message)

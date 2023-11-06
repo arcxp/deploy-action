@@ -7846,6 +7846,7 @@ var require_upload = __commonJS({
           name: "bundle",
           filename: basename(artifact)
         });
+        core2.debug(`Making call to upload ${artifact} to ${url}`);
         const response = await fetch(url, {
           method: "POST",
           body: formData,
@@ -7854,7 +7855,9 @@ var require_upload = __commonJS({
             Accept: "application/json"
           }
         });
-        return await response.json();
+        const responseText = await response.text();
+        core2.debug("Response for upload call: ${responseText}");
+        return JSON.parse(responseText);
       } catch (error) {
         console.error("Failed!", error);
         return core2.setFailed(error.message);
