@@ -7945,7 +7945,7 @@ var main = async () => {
   let retriesRemaining = runContext.retryCount;
   const retryDelay = runContext.retryDelay;
   let newestVersion = void 0;
-  while (retriesRemining >= 0) {
+  while (retriesRemaining >= 0) {
     const newVersions = await getCurrentVersions(runContext);
     if (newVersions[newVersions.length - 1] !== latestVersion) {
       newestVersion = newVersions[newVersions.length - 1];

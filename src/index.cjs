@@ -53,7 +53,7 @@ const main = async () => {
 
   let newestVersion = undefined
   // Wait for the internal deployer to do its thing.
-  while (retriesRemining >= 0) {
+  while (retriesRemaining >= 0) {
     const newVersions = await getCurrentVersions(runContext)
     if (newVersions[newVersions.length - 1] !== latestVersion) {
       newestVersion = newVersions[newVersions.length - 1]
