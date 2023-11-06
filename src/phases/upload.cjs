@@ -26,7 +26,7 @@ const uploadArtifact = async ({
   const bundleName = [
     bundlePrefix,
     new Date().getTime(),
-    context.ref,
+    context.head_ref,
     context.sha,
   ].join('-')
 

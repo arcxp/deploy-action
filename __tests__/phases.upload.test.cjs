@@ -19,7 +19,7 @@ describe('upload.js', () => {
     const runContext = {
       context: {
         sha: '7f7574fc',
-        ref: 'main',
+        head_ref: 'main',
       },
       client: dummyClient,
       core,
