@@ -21990,7 +21990,7 @@ var require_upload = __commonJS({
       const bundleName = [
         bundlePrefix,
         (/* @__PURE__ */ new Date()).getTime(),
-        context.ref,
+        context.head_ref,
         context.sha
       ].join("-");
       try {
