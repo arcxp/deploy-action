@@ -55,6 +55,7 @@ const main = async () => {
   // Wait for the internal deployer to do its thing.
   while (retriesRemaining >= 0) {
     const newVersions = await getCurrentVersions(runContext)
+    core.debug(`New versions: ${JSON.stringify(newVersions, undefined, 2)}`)
     if (newVersions[newVersions.length - 1] !== latestVersion) {
       newestVersion = newVersions[newVersions.length - 1]
       break
