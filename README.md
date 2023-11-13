@@ -1,16 +1,16 @@
 # Arc XP Deploy Action
 
-This action deploys a project to Arc XP using your Arc XP credentials.
+This custom action will help you to deploy your PageBuilder bundles to Arc XP using your Arc XP environment.
 
 ## Description
 
 **NOTE:** This action requires that you have an active Arc XP account. If you do not have an Arc XP account, or you have any questions, please contact your Arc XP representative.
 
-This action deploys a Fusion Bundle to Arc XP using your Arc XP credentials. It will deploy the project to the Arc XP instance that matches the `api-hostname` input. If the project has not been deployed before, it will create an initial deployment. If the project has been deployed before, it will create a new deployment and delete the oldest deployment if the number of deployments exceeds the `minimum-running-versions` input.
+This action deploys a PageBuilder Bundle to Arc XP using your Arc XP credentials. It will deploy the project to the Arc XP instance that matches the `api-hostname` input. If the project has not been deployed before, it will create an initial deployment. If the project has been deployed before, it will create a new deployment and delete the oldest deployment if the number of deployments exceeds the `minimum-running-versions` input.
 
 ## Prerequisites
 
-You must have a Fusion Bundle that has been built and is ready to be deployed. You must also have an Arc XP organization ID, API key, and API hostname.
+You must have a PageBuilder Bundle that has been built and is ready to be deployed. You must also have an Arc XP organization ID, API key, and API hostname.
 
 ## Security
 
@@ -61,11 +61,11 @@ The minimum number of versions to keep in a "deployed" state at any given time. 
 
 ## Example
 
-Here's a complete example from a GitHub Action workflow file. This example first builds and zips the Fusion Bundle, and then uses this custom action to deploy to the "Sandbox" environment in the `your-org-here` instance of Arc XP.
+Here's a complete example from a GitHub Action workflow file. This example first builds and zips the PageBuilder Bundle, and then uses this custom action to deploy to the "Sandbox" environment in the `your-org-here` instance of Arc XP.
 
 ```yaml
 ---
-name: Deploy a Fusion Bundle with Custom Action
+name: Deploy a PageBuilder Bundle with Custom Action
 
 on:
   push:
@@ -101,7 +101,7 @@ jobs:
           npm install
 
       # Build the code.
-      - name: Build the Fusion Bundle
+      - name: Build the PageBuilder Bundle
         if: ${{ success() }}
         run: |
           npm run build

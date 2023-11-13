@@ -23,7 +23,7 @@ inputs:
     description: 'The prefix for the bundle name, which is used to identify the bundle in the Arc XP UI'
     required: true
   artifact:
-    description: 'The artifact to be uploaded to Arc XP Fusion'
+    description: 'The artifact to be uploaded to Arc XP PageBuilder'
     required: true
     default: 'dist/fusion-bundle.zip'
   retry-count:
