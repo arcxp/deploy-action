@@ -13,9 +13,10 @@ const verifyArtifact = async ({ core, artifact }) => {
 }
 
 const verifyArcHost = ({ core, apiHostname }) =>
-  apiHostname.match(/^[a-z0-9_.-]+?\.arcpublishing\.net$/i)
+  apiHostname.match(/^[a-z0-9_.-]+?\.arcpublishing\.(net|com)$/i)
     ? true
-    : core.setFailed(`Host name '${apiHostname}' is not valid.`)
+    : core.setFailed(`Host name '${apiHostname}' is not valid.`) &&
+      process.exit(-1)
 
 const verifyMinimumRunningVersions = ({ core, minimumRunningVersions }) =>
   minimumRunningVersions >= 1 && minimumRunningVersions <= 10
