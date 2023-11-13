@@ -61,7 +61,7 @@ The minimum number of versions to keep in a "deployed" state at any given time. 
 
 ## Example
 
-Here's a complete example from a GitHub Action workflow file. This example first builds and zips the Fusion Bundle, and then uses this custom action to deploy to the "Sandbox" environment in the `arctesting2` instance of Arc XP.
+Here's a complete example from a GitHub Action workflow file. This example first builds and zips the Fusion Bundle, and then uses this custom action to deploy to the "Sandbox" environment in the `your-org-here` instance of Arc XP.
 
 ```yaml
 ---
