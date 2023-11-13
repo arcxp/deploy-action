@@ -21964,10 +21964,14 @@ var require_validation = __commonJS({
         return core2.setFailed(`Could not find artifact \xAB${artifact}\xBB`);
       }
     };
-    var verifyArcHost = ({ core: core2, hostname }) => hostname.match(/^[a-z0-9_.-]+?\.arcpublishing\.net$/i) ? true : core2.setFailed(`Host name '${hostname}' is not valid.`);
+    var verifyArcHost2 = ({ core: core2, hostname }) => hostname.match(/^[a-z0-9_.-]+?\.arcpublishing\.net$/i) ? true : core2.setFailed(`Host name '${hostname}' is not valid.`);
+    var verifyMinimumRunningVersions2 = ({ core: core2, minimumRunningVersions }) => minimumRunningVersions >= 1 && minimumRunningVersions <= 10 ? true : core2.setFailed(
+      `Minimum running versions '${minimumRunningVersions}' is not valid. Must be between 1 and 10.`
+    );
     module2.exports = {
       verifyArtifact,
-      verifyArcHost
+      verifyArcHost: verifyArcHost2,
+      verifyMinimumRunningVersions: verifyMinimumRunningVersions2
     };
   }
 });
@@ -21979,20 +21983,13 @@ var require_upload = __commonJS({
     var { verifyArtifact } = require_validation();
     var { readFileSync } = require("node:fs");
     var uploadArtifact2 = async ({
-      context,
       core: core2,
       artifact,
-      bundlePrefix,
+      bundleName,
       apiHostname,
       apiKey
     }) => {
       await verifyArtifact({ core: core2, artifact });
-      const bundleName = [
-        bundlePrefix,
-        (/* @__PURE__ */ new Date()).getTime(),
-        context.ref_name,
-        context.sha
-      ].join("-");
       try {
         const url = `https://${apiHostname}/deployments/fusion/bundles`;
         const formData = new FormData();
@@ -22011,9 +22008,12 @@ var require_upload = __commonJS({
             Accept: "application/json"
           }
         });
+        if (!response.ok) {
+          core2.setFailed(responseText);
+        }
         const responseText = await response.text();
         core2.debug(`Response for upload call: ${responseText}`);
-        return JSON.parse(responseText);
+        return bundleName;
       } catch (error) {
         console.error("Failed!", error);
         return core2.setFailed(error.message);
@@ -22061,6 +22061,28 @@ var require_promote_version = __commonJS({
   }
 });
 
+// src/phases/deploy-version.cjs
+var require_deploy_version = __commonJS({
+  "src/phases/deploy-version.cjs"(exports2, module2) {
+    var deployLatestVersion2 = async ({
+      core: core2,
+      client,
+      apiHostname,
+      bundleName
+    }) => {
+      try {
+        const url = `https://${apiHostname}/deployments/fusion/services?bundle=${encodeURI(
+          bundleName
+        )}&version=latest`;
+        return await client.post(url);
+      } catch (err) {
+        core2.setFailed(err.message);
+      }
+    };
+    module2.exports = { deployLatestVersion: deployLatestVersion2 };
+  }
+});
+
 // src/index.cjs
 var core = require_core();
 var github = require_github();
@@ -22069,6 +22091,11 @@ var { getCurrentVersions } = require_current_versions();
 var { uploadArtifact } = require_upload();
 var { terminateOldestVersion } = require_terminate_oldest();
 var { promoteNewVersion } = require_promote_version();
+var { deployLatestVersion } = require_deploy_version();
+var {
+  verifyMinimumRunningVersions,
+  verifyArcHost
+} = require_validation();
 var runContext = {
   context: github.context,
   orgId: core.getInput("org-id"),
@@ -22078,13 +22105,22 @@ var runContext = {
   artifact: core.getInput("artifact"),
   retryCount: core.getInput("retry-count"),
   retryDelay: core.getInput("retry-delay"),
+  minimumRunningVersions: core.getInput("minimum-running-versions"),
   client: new HttpClient("nodejs - GitHub Actions - arcxp/deploy-action", [], {
     headers: { Authorization: `Bearer ${core.getInput("api-key")}` }
   }),
+  bundleName: [
+    runContext.bundlePrefix,
+    (/* @__PURE__ */ new Date()).getTime(),
+    runContext.context.ref_name,
+    runContext.context.sha
+  ].join("-"),
   core
 };
 var retryDelayWait = () => new Promise((res) => setTimeout(() => res(), runContext.retryDelay * 1e3));
 var main = async () => {
+  verifyMinimumRunningVersions(runContext);
+  verifyArcHost(runContext);
   const currentVersions = await getCurrentVersions(runContext);
   core.debug("currentVersions", JSON.stringify(currentVersions, void 0, 2));
   if (!Array.isArray(currentVersions) || !currentVersions.length) {
@@ -22092,9 +22128,9 @@ var main = async () => {
   }
   const oldestVersion = currentVersions[0];
   const latestVersion = currentVersions[currentVersions.length - 1];
-  const uploadResults = await uploadArtifact(runContext);
-  core.debug("uploadArtifact", JSON.stringify(uploadResults, void 0, 2));
-  if (currentVersions.length > 1) {
+  await uploadArtifact(runContext);
+  await deployLatestVersion(runContext);
+  if (currentVersions.length > runContext.minimumRunningVersions) {
     const termResults = terminateOldestVersion(runContext, oldestVersion);
     core.debug(
       "terminateOldestVersionResults",
@@ -22102,7 +22138,6 @@ var main = async () => {
     );
   }
   let retriesRemaining = runContext.retryCount;
-  const retryDelay = runContext.retryDelay;
   let newestVersion = void 0;
   while (retriesRemaining >= 0) {
     const newVersions = await getCurrentVersions(runContext);

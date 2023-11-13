@@ -28,9 +28,13 @@ inputs:
     default: 'dist/fusion-bundle.zip'
   retry-count:
     description: 'The number of times to retry the deployment if it fails'
-    required: false
+    required: true
     default: 10
   retry-delay:
     description: 'The number of seconds to wait between retries'
-    required: false
+    required: true
     default: 5
+  minimum-running-versions:
+    description: The minimum number of versions to keep in a "deployed" state at any given time. The maximum is 10, the minimum is 1.
+    required: true
+    default: 7

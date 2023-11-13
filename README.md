@@ -16,18 +16,20 @@ This action deploys a project to Arc XP using your Arc XP credentials.
 
 **Required** The host name for your Arc XP instances.
 
-### `product`
-
-**Optional** The product to deploy. Presently, `fusion` is the only supported product. Default `"fusion"`.
-
 ### `bundle-prefix`
 
-**Optional** The prefix for the bundle name. Default `"bundle"`.
+The prefix for the bundle name, which is used to identify the bundle in the Arc XP UI.
 
 ### `retry-count`
 
-**Optional** The number of times to retry the deployment if there's a recoverable error. Default `10`.
+The number of times to retry the deployment if there's a recoverable error. Default `10`.
 
 ### `retry-delay`
 
-**Optional** The number of seconds to wait between retries. Default `5`.
+The number of seconds to wait between retries. Default `5`.
+
+### `minimum-running-versions`
+
+The minimum number of versions to keep in a "deployed" state at any given time. The maximum is 10, the minimum is 1. Default `7`.
+
+## Example

@@ -6,6 +6,11 @@ const { getCurrentVersions } = require('./phases/current-versions.cjs')
 const { uploadArtifact } = require('./phases/upload.cjs')
 const { terminateOldestVersion } = require('./phases/terminate-oldest.cjs')
 const { promoteNewVersion } = require('./phases/promote-version.cjs')
+const { deployLatestVersion } = require('./phases/deploy-version.cjs')
+const {
+  verifyMinimumRunningVersions,
+  verifyArcHost,
+} = require('./validation.cjs')
 
 const runContext = {
   context: github.context,
@@ -16,9 +21,16 @@ const runContext = {
   artifact: core.getInput('artifact'),
   retryCount: core.getInput('retry-count'),
   retryDelay: core.getInput('retry-delay'),
+  minimumRunningVersions: core.getInput('minimum-running-versions'),
   client: new HttpClient('nodejs - GitHub Actions - arcxp/deploy-action', [], {
     headers: { Authorization: `Bearer ${core.getInput('api-key')}` },
   }),
+  bundleName: [
+    runContext.bundlePrefix,
+    new Date().getTime(),
+    runContext.context.ref_name,
+    runContext.context.sha,
+  ].join('-'),
   core,
 }
 
@@ -26,6 +38,10 @@ const retryDelayWait = () =>
   new Promise((res) => setTimeout(() => res(), runContext.retryDelay * 1000))
 
 const main = async () => {
+  // A little validation
+  verifyMinimumRunningVersions(runContext)
+  verifyArcHost(runContext)
+
   const currentVersions = await getCurrentVersions(runContext)
   core.debug('currentVersions', JSON.stringify(currentVersions, undefined, 2))
 
@@ -36,11 +52,11 @@ const main = async () => {
   const oldestVersion = currentVersions[0]
   const latestVersion = currentVersions[currentVersions.length - 1]
 
-  const uploadResults = await uploadArtifact(runContext)
-  core.debug('uploadArtifact', JSON.stringify(uploadResults, undefined, 2))
+  await uploadArtifact(runContext)
+  await deployLatestVersion(runContext)
 
   // Don't terminate if there aren't more versions than one.
-  if (currentVersions.length > 1) {
+  if (currentVersions.length > runContext.minimumRunningVersions) {
     const termResults = terminateOldestVersion(runContext, oldestVersion)
     core.debug(
       'terminateOldestVersionResults',
@@ -49,7 +65,6 @@ const main = async () => {
   }
 
   let retriesRemaining = runContext.retryCount
-  const retryDelay = runContext.retryDelay
 
   let newestVersion = undefined
   // Wait for the internal deployer to do its thing.

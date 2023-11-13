@@ -14,21 +14,13 @@ const { readFileSync } = require('node:fs')
  * @function
  **/
 const uploadArtifact = async ({
-  context,
   core,
   artifact,
-  bundlePrefix,
+  bundleName,
   apiHostname,
   apiKey,
 }) => {
   await verifyArtifact({ core, artifact })
-
-  const bundleName = [
-    bundlePrefix,
-    new Date().getTime(),
-    context.ref_name,
-    context.sha,
-  ].join('-')
 
   // Shift to Fetch API!
   try {
@@ -50,9 +42,13 @@ const uploadArtifact = async ({
       },
     })
 
+    if (!response.ok) {
+      core.setFailed(responseText)
+    }
+
     const responseText = await response.text()
     core.debug(`Response for upload call: ${responseText}`)
-    return JSON.parse(responseText)
+    return bundleName
   } catch (error) {
     console.error('Failed!', error)
     return core.setFailed(error.message)
