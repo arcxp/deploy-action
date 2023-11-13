@@ -21957,8 +21957,10 @@ var require_validation = __commonJS({
   "src/validation.cjs"(exports2, module2) {
     var { existsSync } = require("node:fs");
     var verifyArtifact = async ({ core: core2, artifact }) => {
-      if (!artifact.match(/^[a-z0-9_.\/ -]+?\.zip/i)) {
-        return core2.setFailed(`File `);
+      if (!artifact.match(/^[a-z0-9_./ -]+?\.zip$/i)) {
+        return core2.setFailed(
+          `File ${artifact} is not a valid artifact. It must be a ZIP file.`
+        );
       }
       if (!existsSync(artifact)) {
         return core2.setFailed(`Could not find artifact \xAB${artifact}\xBB`);
@@ -22109,14 +22111,14 @@ var runContext = {
   client: new HttpClient("nodejs - GitHub Actions - arcxp/deploy-action", [], {
     headers: { Authorization: `Bearer ${core.getInput("api-key")}` }
   }),
-  bundleName: [
-    runContext.bundlePrefix,
-    (/* @__PURE__ */ new Date()).getTime(),
-    runContext.context.ref_name,
-    runContext.context.sha
-  ].join("-"),
   core
 };
+runContext.bundleName = [
+  runContext.bundlePrefix,
+  (/* @__PURE__ */ new Date()).getTime(),
+  runContext.context.ref_name,
+  runContext.context.sha
+].join("-");
 var retryDelayWait = () => new Promise((res) => setTimeout(() => res(), runContext.retryDelay * 1e3));
 var main = async () => {
   verifyMinimumRunningVersions(runContext);

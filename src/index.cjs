@@ -25,14 +25,15 @@ const runContext = {
   client: new HttpClient('nodejs - GitHub Actions - arcxp/deploy-action', [], {
     headers: { Authorization: `Bearer ${core.getInput('api-key')}` },
   }),
-  bundleName: [
-    runContext.bundlePrefix,
-    new Date().getTime(),
-    runContext.context.ref_name,
-    runContext.context.sha,
-  ].join('-'),
+
   core,
 }
+runContext.bundleName = [
+  runContext.bundlePrefix,
+  new Date().getTime(),
+  runContext.context.ref_name,
+  runContext.context.sha,
+].join('-')
 
 const retryDelayWait = () =>
   new Promise((res) => setTimeout(() => res(), runContext.retryDelay * 1000))
