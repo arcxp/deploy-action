@@ -14,7 +14,7 @@ const verifyArtifact = async ({ core, artifact }) => {
 }
 
 const verifyArcHost = ({ core, apiHostname }) =>
-  apiHostname.match(/^[a-z0-9_.-]+?\.arcpublishing\.(net|com)$/i)
+  apiHostname.match(/^[a-z0-9_.-]+?\.arcpublishing\.(com)$/i)
     ? true
     : core.setFailed(`Host name '${apiHostname}' is not valid.`) &&
       process.exit(-1)

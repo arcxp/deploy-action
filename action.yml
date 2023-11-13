@@ -3,8 +3,8 @@ name: 'Deploy to Arc XP'
 description: 'This is an action which makes it convenient to deploy to Arc XP'
 author: 'Arc XP'
 branding:
-  icon: 'monitor'
-  color: 'purple'
+  icon: 'truck'
+  color: 'blue'
 runs:
   using: node20
   main: dist/index.cjs
