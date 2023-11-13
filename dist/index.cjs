@@ -21966,7 +21966,7 @@ var require_validation = __commonJS({
         return core2.setFailed(`Could not find artifact \xAB${artifact}\xBB`);
       }
     };
-    var verifyArcHost2 = ({ core: core2, hostname }) => hostname.match(/^[a-z0-9_.-]+?\.arcpublishing\.net$/i) ? true : core2.setFailed(`Host name '${hostname}' is not valid.`);
+    var verifyArcHost2 = ({ core: core2, apiHostname }) => apiHostname.match(/^[a-z0-9_.-]+?\.arcpublishing\.net$/i) ? true : core2.setFailed(`Host name '${apiHostname}' is not valid.`);
     var verifyMinimumRunningVersions2 = ({ core: core2, minimumRunningVersions }) => minimumRunningVersions >= 1 && minimumRunningVersions <= 10 ? true : core2.setFailed(
       `Minimum running versions '${minimumRunningVersions}' is not valid. Must be between 1 and 10.`
     );
