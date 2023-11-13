@@ -21955,6 +21955,7 @@ var require_current_versions = __commonJS({
 // src/validation.cjs
 var require_validation = __commonJS({
   "src/validation.cjs"(exports2, module2) {
+    var process2 = require("node:process");
     var { existsSync } = require("node:fs");
     var verifyArtifact = async ({ core: core2, artifact }) => {
       if (!artifact.match(/^[a-z0-9_./ -]+?\.zip$/i)) {
@@ -21966,7 +21967,7 @@ var require_validation = __commonJS({
         return core2.setFailed(`Could not find artifact \xAB${artifact}\xBB`);
       }
     };
-    var verifyArcHost2 = ({ core: core2, apiHostname }) => apiHostname.match(/^[a-z0-9_.-]+?\.arcpublishing\.net$/i) ? true : core2.setFailed(`Host name '${apiHostname}' is not valid.`);
+    var verifyArcHost2 = ({ core: core2, apiHostname }) => apiHostname.match(/^[a-z0-9_.-]+?\.arcpublishing\.(net|com)$/i) ? true : core2.setFailed(`Host name '${apiHostname}' is not valid.`) && process2.exit(-1);
     var verifyMinimumRunningVersions2 = ({ core: core2, minimumRunningVersions }) => minimumRunningVersions >= 1 && minimumRunningVersions <= 10 ? true : core2.setFailed(
       `Minimum running versions '${minimumRunningVersions}' is not valid. Must be between 1 and 10.`
     );

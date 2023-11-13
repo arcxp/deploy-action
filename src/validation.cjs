@@ -1,3 +1,4 @@
+const process = require('node:process')
 const { existsSync } = require('node:fs')
 
 const verifyArtifact = async ({ core, artifact }) => {
