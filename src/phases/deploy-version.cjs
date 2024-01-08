@@ -3,11 +3,12 @@ const deployLatestVersion = async ({
   client,
   apiHostname,
   bundleName,
+  pagebuilderVersion,
 }) => {
   try {
     const url = `https://${apiHostname}/deployments/fusion/services?bundle=${encodeURI(
       bundleName,
-    )}&version=latest`
+    )}&version=${pagebuilderVersion ?? 'latest'}`
     return await client.post(url)
   } catch (err) {
     core.setFailed(err.message)

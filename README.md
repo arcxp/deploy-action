@@ -43,6 +43,10 @@ This action requires that you have an Arc XP account. It will use your Arc XP AP
 
 **Required** The host name for your Arc XP instances.
 
+### `pagebuilder-version`
+
+This is the version of PageBuilder you wish to deploy with. Default is `latest`.
+
 ### `bundle-prefix`
 
 The prefix for the bundle name, which is used to identify the bundle in the Arc XP UI.

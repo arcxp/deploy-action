@@ -26,8 +26,14 @@ const verifyMinimumRunningVersions = ({ core, minimumRunningVersions }) =>
         `Minimum running versions '${minimumRunningVersions}' is not valid. Must be between 1 and 10.`,
       )
 
+const verifyPageBuilderVersion = ({ core, pagebuilderVersion }) =>
+  pagebuilderVersion?.match(/^(latest|[a-zA-Z0-9.-]+)$/)
+    ? true
+    : core.setFailed(`PageBuilder version ${pagebuilderVersion} is not valid.`)
+
 module.exports = {
   verifyArtifact,
   verifyArcHost,
   verifyMinimumRunningVersions,
+  verifyPageBuilderVersion,
 }

@@ -19,6 +19,10 @@ inputs:
   api-hostname:
     description: 'The API hostname for Arc XP organization'
     required: true
+  pagebuilder-version:
+    description: 'The PageBuilder version you wish to deploy with'
+    required: false
+    default: 'latest'
   bundle-prefix:
     description: 'The prefix for the bundle name, which is used to identify the bundle in the Arc XP UI'
     required: true

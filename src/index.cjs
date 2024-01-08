@@ -10,6 +10,7 @@ const { deployLatestVersion } = require('./phases/deploy-version.cjs')
 const {
   verifyMinimumRunningVersions,
   verifyArcHost,
+  verifyPageBuilderVersion,
 } = require('./validation.cjs')
 
 const runContext = {
@@ -18,6 +19,7 @@ const runContext = {
   apiKey: core.getInput('api-key'),
   apiHostname: core.getInput('api-hostname'),
   bundlePrefix: core.getInput('bundle-prefix'),
+  pagebuilderVersion: core.getInput('pagebuilder-version'),
   artifact: core.getInput('artifact'),
   retryCount: core.getInput('retry-count'),
   retryDelay: core.getInput('retry-delay'),
@@ -43,6 +45,7 @@ const main = async () => {
   // A little validation
   verifyMinimumRunningVersions(runContext)
   verifyArcHost(runContext)
+  verifyPageBuilderVersion(runContext)
 
   const currentVersions = await getCurrentVersions(runContext)
   core.debug('currentVersions', JSON.stringify(currentVersions, undefined, 2))
