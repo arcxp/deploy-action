@@ -85,6 +85,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Configure path
+        if: ${{ success() }}
+        run: |
+          echo "./node_modules/.bin" >> $GITHUB_PATH
+
       - name: Checkout the code
         if: ${{ success() }}
         uses: actions/checkout@v3
@@ -108,8 +113,8 @@ jobs:
       - name: Build the PageBuilder Bundle
         if: ${{ success() }}
         run: |
-          npm run build
-          npm run zip
+          fusion build
+          fusion zip --rename fusion-bundle
 
       - name: Perform the deploy
         if: ${{ success() }}
