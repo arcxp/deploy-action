@@ -21971,10 +21971,12 @@ var require_validation = __commonJS({
     var verifyMinimumRunningVersions2 = ({ core: core2, minimumRunningVersions }) => minimumRunningVersions >= 1 && minimumRunningVersions <= 10 ? true : core2.setFailed(
       `Minimum running versions '${minimumRunningVersions}' is not valid. Must be between 1 and 10.`
     );
+    var verifyPageBuilderVersion2 = ({ core: core2, pagebuilderVersion }) => pagebuilderVersion?.match(/^(latest|[a-zA-Z0-9.-]+)$/) ? true : core2.setFailed(`PageBuilder version ${pagebuilderVersion} is not valid.`);
     module2.exports = {
       verifyArtifact,
       verifyArcHost: verifyArcHost2,
-      verifyMinimumRunningVersions: verifyMinimumRunningVersions2
+      verifyMinimumRunningVersions: verifyMinimumRunningVersions2,
+      verifyPageBuilderVersion: verifyPageBuilderVersion2
     };
   }
 });
@@ -22071,12 +22073,13 @@ var require_deploy_version = __commonJS({
       core: core2,
       client,
       apiHostname,
-      bundleName
+      bundleName,
+      pagebuilderVersion
     }) => {
       try {
         const url = `https://${apiHostname}/deployments/fusion/services?bundle=${encodeURI(
           bundleName
-        )}&version=latest`;
+        )}&version=${pagebuilderVersion ?? "latest"}`;
         return await client.post(url);
       } catch (err) {
         core2.setFailed(err.message);
@@ -22097,7 +22100,8 @@ var { promoteNewVersion } = require_promote_version();
 var { deployLatestVersion } = require_deploy_version();
 var {
   verifyMinimumRunningVersions,
-  verifyArcHost
+  verifyArcHost,
+  verifyPageBuilderVersion
 } = require_validation();
 var runContext = {
   context: github.context,
@@ -22105,6 +22109,7 @@ var runContext = {
   apiKey: core.getInput("api-key"),
   apiHostname: core.getInput("api-hostname"),
   bundlePrefix: core.getInput("bundle-prefix"),
+  pagebuilderVersion: core.getInput("pagebuilder-version"),
   artifact: core.getInput("artifact"),
   retryCount: core.getInput("retry-count"),
   retryDelay: core.getInput("retry-delay"),
@@ -22124,6 +22129,7 @@ var retryDelayWait = () => new Promise((res) => setTimeout(() => res(), runConte
 var main = async () => {
   verifyMinimumRunningVersions(runContext);
   verifyArcHost(runContext);
+  verifyPageBuilderVersion(runContext);
   const currentVersions = await getCurrentVersions(runContext);
   core.debug("currentVersions", JSON.stringify(currentVersions, void 0, 2));
   if (!Array.isArray(currentVersions) || !currentVersions.length) {
