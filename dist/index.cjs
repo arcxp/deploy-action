@@ -22138,7 +22138,7 @@ var main = async () => {
   verifyArcHost(runContext);
   verifyPageBuilderVersion(runContext);
   if (runContext.shouldDeploy === false && runContext.shouldPromote === true) {
-    return core.error("If `promote` is true, `deploy` must also be true.");
+    return core.setFailed("If `promote` is true, `deploy` must also be true.");
   }
   const currentVersions = await getCurrentVersions(runContext);
   core.debug("currentVersions", JSON.stringify(currentVersions, void 0, 2));

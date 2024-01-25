@@ -50,7 +50,7 @@ const main = async () => {
   verifyPageBuilderVersion(runContext)
 
   if (runContext.shouldDeploy === false && runContext.shouldPromote === true) {
-    return core.error('If `promote` is true, `deploy` must also be true.')
+    return core.setFailed('If `promote` is true, `deploy` must also be true.')
   }
 
   const currentVersions = await getCurrentVersions(runContext)
