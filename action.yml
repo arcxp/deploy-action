@@ -42,3 +42,11 @@ inputs:
     description: The minimum number of versions to keep in a "deployed" state at any given time. The maximum is 10, the minimum is 1.
     required: true
     default: 7
+  deploy:
+    description: This is an option that would allow you to skip deployment.
+    required: false
+    default: true
+  promote:
+    description: This is an option that would allow you to skip promoting a version. If `deploy` is false, and this is true, the workflow will fail.
+    required: false
+    default: true

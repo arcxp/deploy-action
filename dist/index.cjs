@@ -22051,7 +22051,12 @@ var require_terminate_oldest = __commonJS({
 // src/phases/promote-version.cjs
 var require_promote_version = __commonJS({
   "src/phases/promote-version.cjs"(exports2, module2) {
-    var promoteNewVersion2 = async ({ core: core2, client, apiHostname }, versionToPromote) => {
+    var promoteNewVersion2 = async ({
+      core: core2,
+      client,
+      apiHostname,
+      newestVersion: versionToPromote
+    }) => {
       try {
         if (!versionToPromote) {
           core2.setFailed("Unable to detect the new version");
@@ -22114,13 +22119,15 @@ var runContext = {
   retryCount: core.getInput("retry-count"),
   retryDelay: core.getInput("retry-delay"),
   minimumRunningVersions: core.getInput("minimum-running-versions"),
+  shouldDeploy: ["true", true].includes(core.getInput("deploy")),
+  shouldPromote: ["true", true].includes(core.getInput("promote")),
   client: new HttpClient("nodejs - GitHub Actions - arcxp/deploy-action", [], {
     headers: { Authorization: `Bearer ${core.getInput("api-key")}` }
   }),
   core
 };
 runContext.bundleName = [
-  runContext.bundlePrefix,
+  runContext.bundlePrefix ?? "bundle",
   (/* @__PURE__ */ new Date()).getTime(),
   runContext.context.ref_name,
   runContext.context.sha
@@ -22130,6 +22137,9 @@ var main = async () => {
   verifyMinimumRunningVersions(runContext);
   verifyArcHost(runContext);
   verifyPageBuilderVersion(runContext);
+  if (runContext.shouldDeploy === false && runContext.shouldPromote === true) {
+    return core.setFailed("If `promote` is true, `deploy` must also be true.");
+  }
   const currentVersions = await getCurrentVersions(runContext);
   core.debug("currentVersions", JSON.stringify(currentVersions, void 0, 2));
   if (!Array.isArray(currentVersions) || !currentVersions.length) {
@@ -22138,37 +22148,41 @@ var main = async () => {
   const oldestVersion = currentVersions[0];
   const latestVersion = currentVersions[currentVersions.length - 1];
   await uploadArtifact(runContext);
-  await deployLatestVersion(runContext);
-  if (currentVersions.length > runContext.minimumRunningVersions) {
-    const termResults = terminateOldestVersion(runContext, oldestVersion);
-    core.debug(
-      "terminateOldestVersionResults",
-      JSON.stringify(termResults, void 0, 2)
-    );
-  }
-  let retriesRemaining = runContext.retryCount;
-  let newestVersion = void 0;
-  while (retriesRemaining >= 0) {
-    const newVersions = await getCurrentVersions(runContext);
-    core.debug(`New versions: ${JSON.stringify(newVersions, void 0, 2)}`);
-    if (newVersions[newVersions.length - 1] !== latestVersion) {
-      newestVersion = newVersions[newVersions.length - 1];
-      break;
+  if (runContext.shouldDeploy) {
+    await deployLatestVersion(runContext);
+    if (currentVersions.length > runContext.minimumRunningVersions) {
+      const termResults = terminateOldestVersion(runContext, oldestVersion);
+      core.debug(
+        "terminateOldestVersionResults",
+        JSON.stringify(termResults, void 0, 2)
+      );
     }
-    await retryDelayWait();
-    retriesRemaining -= 1;
-  }
-  if (!newestVersion) {
-    return core.setFailed(
-      `We retried ${runContext.retryCount} times with ${runContext.retryDelay} seconds between retries. Unfortunately, the new version does not appear to have deployed successfully. Please check logs, and contact support if this problem continues.
+    let retriesRemaining = runContext.retryCount;
+    let newestVersion = void 0;
+    while (retriesRemaining >= 0) {
+      const newVersions = await getCurrentVersions(runContext);
+      core.debug(`New versions: ${JSON.stringify(newVersions, void 0, 2)}`);
+      if (newVersions[newVersions.length - 1] !== latestVersion) {
+        newestVersion = newVersions[newVersions.length - 1];
+        break;
+      }
+      await retryDelayWait();
+      retriesRemaining -= 1;
+    }
+    if (!newestVersion) {
+      return core.setFailed(
+        `We retried ${runContext.retryCount} times with ${runContext.retryDelay} seconds between retries. Unfortunately, the new version does not appear to have deployed successfully. Please check logs, and contact support if this problem continues.
 
 You may wish to retry this action again, but with debugging enabled.`
-    );
-  } else {
-    await promoteNewVersion(runContext, newestVersion);
+      );
+    }
+    runContext.newestVersion = newestVersion;
+  }
+  if (runContext.shouldPromote) {
+    await promoteNewVersion(runContext);
   }
 };
-main();
+main().finally(() => core.debug("Finished."));
 /*! Bundled license information:
 
 undici/lib/fetch/body.js:

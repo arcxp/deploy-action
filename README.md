@@ -63,6 +63,14 @@ The number of seconds to wait between retries. Default `5`.
 
 The minimum number of versions to keep in a "deployed" state at any given time. The maximum is 10, the minimum is 1. Default `7`.
 
+### `deploy`
+
+This is an option that would allow you to skip deployment. Default `true`.
+
+### `promote`
+
+This is an option that would allow you to skip promoting a version. If `deploy` is false, and this is true, the workflow will fail. Default `true`.
+
 ## Example
 
 Here's a complete example from a GitHub Action workflow file. This example first builds and zips the PageBuilder Bundle, and then uses this custom action to deploy to the "Sandbox" environment in the `your-org-here` instance of Arc XP.
@@ -92,12 +100,12 @@ jobs:
 
       - name: Checkout the code
         if: ${{ success() }}
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # This configures NodeJS for our purposes.
       - name: Set up Node
         if: ${{ success() }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           #### IF YOU NEED TO CHANGE YOUR NODE VERSION, JUST CHANGE THIS NUMBER
           node-version: 20

@@ -1,7 +1,9 @@
-const promoteNewVersion = async (
-  { core, client, apiHostname },
-  versionToPromote,
-) => {
+const promoteNewVersion = async ({
+  core,
+  client,
+  apiHostname,
+  newestVersion: versionToPromote,
+}) => {
   try {
     if (!versionToPromote) {
       core.setFailed('Unable to detect the new version')
