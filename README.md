@@ -63,6 +63,14 @@ The number of seconds to wait between retries. Default `5`.
 
 The minimum number of versions to keep in a "deployed" state at any given time. The maximum is 10, the minimum is 1. Default `7`.
 
+### `deploy`
+
+This is an option that would allow you to skip deployment. Default `true`.
+
+### `promote`
+
+This is an option that would allow you to skip promoting a version. If `deploy` is false, and this is true, the workflow will fail. Default `true`.
+
 ## Example
 
 Here's a complete example from a GitHub Action workflow file. This example first builds and zips the PageBuilder Bundle, and then uses this custom action to deploy to the "Sandbox" environment in the `your-org-here` instance of Arc XP.
