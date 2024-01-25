@@ -24,8 +24,8 @@ const runContext = {
   retryCount: core.getInput('retry-count'),
   retryDelay: core.getInput('retry-delay'),
   minimumRunningVersions: core.getInput('minimum-running-versions'),
-  shouldDeploy: core.getInput('deploy'),
-  shouldPromote: core.getInput('promote'),
+  shouldDeploy: ['true', true].includes(core.getInput('deploy')),
+  shouldPromote: ['true', true].includes(core.getInput('promote')),
   client: new HttpClient('nodejs - GitHub Actions - arcxp/deploy-action', [], {
     headers: { Authorization: `Bearer ${core.getInput('api-key')}` },
   }),
