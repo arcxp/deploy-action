@@ -100,12 +100,12 @@ jobs:
 
       - name: Checkout the code
         if: ${{ success() }}
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # This configures NodeJS for our purposes.
       - name: Set up Node
         if: ${{ success() }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           #### IF YOU NEED TO CHANGE YOUR NODE VERSION, JUST CHANGE THIS NUMBER
           node-version: 20
