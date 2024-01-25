@@ -34,7 +34,7 @@ const runContext = {
 }
 
 runContext.bundleName = [
-  runContext.bundlePrefix,
+  runContext.bundlePrefix ?? 'bundle',
   new Date().getTime(),
   runContext.context.ref_name,
   runContext.context.sha,
@@ -98,10 +98,12 @@ const main = async () => {
         `We retried ${runContext.retryCount} times with ${runContext.retryDelay} seconds between retries. Unfortunately, the new version does not appear to have deployed successfully. Please check logs, and contact support if this problem continues.\n\nYou may wish to retry this action again, but with debugging enabled.`,
       )
     }
+
+    runContext.newestVersion = newestVersion
   }
   if (runContext.shouldPromote) {
-    await promoteNewVersion(runContext, newestVersion)
+    await promoteNewVersion(runContext)
   }
 }
 
-main()
+main().finally(() => core.debug('Finished.'))

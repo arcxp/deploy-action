@@ -22051,7 +22051,12 @@ var require_terminate_oldest = __commonJS({
 // src/phases/promote-version.cjs
 var require_promote_version = __commonJS({
   "src/phases/promote-version.cjs"(exports2, module2) {
-    var promoteNewVersion2 = async ({ core: core2, client, apiHostname }, versionToPromote) => {
+    var promoteNewVersion2 = async ({
+      core: core2,
+      client,
+      apiHostname,
+      newestVersion: versionToPromote
+    }) => {
       try {
         if (!versionToPromote) {
           core2.setFailed("Unable to detect the new version");
@@ -22122,7 +22127,7 @@ var runContext = {
   core
 };
 runContext.bundleName = [
-  runContext.bundlePrefix,
+  runContext.bundlePrefix ?? "bundle",
   (/* @__PURE__ */ new Date()).getTime(),
   runContext.context.ref_name,
   runContext.context.sha
@@ -22153,30 +22158,31 @@ var main = async () => {
       );
     }
     let retriesRemaining = runContext.retryCount;
-    let newestVersion2 = void 0;
+    let newestVersion = void 0;
     while (retriesRemaining >= 0) {
       const newVersions = await getCurrentVersions(runContext);
       core.debug(`New versions: ${JSON.stringify(newVersions, void 0, 2)}`);
       if (newVersions[newVersions.length - 1] !== latestVersion) {
-        newestVersion2 = newVersions[newVersions.length - 1];
+        newestVersion = newVersions[newVersions.length - 1];
         break;
       }
       await retryDelayWait();
       retriesRemaining -= 1;
     }
-    if (!newestVersion2) {
+    if (!newestVersion) {
       return core.setFailed(
         `We retried ${runContext.retryCount} times with ${runContext.retryDelay} seconds between retries. Unfortunately, the new version does not appear to have deployed successfully. Please check logs, and contact support if this problem continues.
 
 You may wish to retry this action again, but with debugging enabled.`
       );
     }
+    runContext.newestVersion = newestVersion;
   }
   if (runContext.shouldPromote) {
-    await promoteNewVersion(runContext, newestVersion);
+    await promoteNewVersion(runContext);
   }
 };
-main();
+main().finally(() => core.debug("Finished."));
 /*! Bundled license information:
 
 undici/lib/fetch/body.js:
