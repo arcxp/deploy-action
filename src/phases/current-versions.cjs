@@ -1,13 +1,19 @@
 const getCurrentVersions = async ({ core, client, apiHostname }) => {
+  let responseBody = undefined
+
   try {
     const url = `https://${apiHostname}/deployments/fusion/services`
     const response = await client.get(url)
 
-    const { lambdas } = JSON.parse(await response.readBody())
+    responseBody = await response.readBody()
+    const { lambdas } = JSON.parse(responseBody)
 
     return lambdas.map(({ Version }) => parseInt(Version)).sort()
   } catch (error) {
-    core.setFailed(error.message)
+    if (error.name === 'SyntaxError') {
+      return core.setFailed(`Unexpected response from server: ${responseBody}`)
+    }
+    return core.setFailed(error.message)
   }
 }
 

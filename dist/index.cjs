@@ -21937,13 +21937,18 @@ var require_github = __commonJS({
 var require_current_versions = __commonJS({
   "src/phases/current-versions.cjs"(exports2, module2) {
     var getCurrentVersions2 = async ({ core: core2, client, apiHostname }) => {
+      let responseBody = void 0;
       try {
         const url = `https://${apiHostname}/deployments/fusion/services`;
         const response = await client.get(url);
-        const { lambdas } = JSON.parse(await response.readBody());
+        responseBody = await response.readBody();
+        const { lambdas } = JSON.parse(responseBody);
         return lambdas.map(({ Version }) => parseInt(Version)).sort();
       } catch (error) {
-        core2.setFailed(error.message);
+        if (error.name === "SyntaxError") {
+          return core2.setFailed(`Unexpected response from server: ${responseBody}`);
+        }
+        return core2.setFailed(error.message);
       }
     };
     module2.exports = {
