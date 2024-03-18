@@ -23,7 +23,7 @@
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@types/jest": "^29.5.12",
-    "@types/node": "^20.11.24",
+    "@types/node": "^20.11.28",
     "esbuild": "^0.20.1",
     "eslint": "^8.57.0",
     "eslint-config-standard": "^17.1.0",
