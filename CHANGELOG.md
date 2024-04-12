@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [1.1.3] - 2024-04-12
+
+This is a maintenance release, only dependencies were updated.
+
 ## [1.1.2] - 2024-02-15
 
 ### Changed
