@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [1.1.4] - 2025-05-21
+
+This is a maintenance release, only bug fixes and dependencies were updated.
+
+### Changed
+
+- Fixed a sorting bug that was causing builds to fail.
+
 ## [1.1.3] - 2024-04-12
 
 This is a maintenance release, only dependencies were updated.
