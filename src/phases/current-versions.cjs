@@ -8,7 +8,7 @@ const getCurrentVersions = async ({ core, client, apiHostname }) => {
     responseBody = await response.readBody()
     const { lambdas } = JSON.parse(responseBody)
 
-    return lambdas.map(({ Version }) => parseInt(Version)).sort()
+    return lambdas.map(({ Version }) => parseInt(Version)).sort((a,b)=> a - b)
   } catch (error) {
     if (error.name === 'SyntaxError') {
       return core.setFailed(`Unexpected response from server: ${responseBody}`)
