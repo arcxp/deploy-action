@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [1.1.5] - 2025-07-23
+
+This is quick dependency update and bug fix release.
+
+### Changed
+
+- Dependencies updated
+
+### Fixed
+
+- Fixed [#44](https://github.com/arcxp/deploy-action/issues/44), broken retry logic when current version calls fail.
+
 ## [1.1.4] - 2025-05-21
 
 This is a maintenance release, only bug fixes and dependencies were updated.

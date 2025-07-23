@@ -23517,7 +23517,7 @@ var main = async () => {
     while (retriesRemaining >= 0) {
       const newVersions = await getCurrentVersions(runContext);
       core.debug(`New versions: ${JSON.stringify(newVersions, void 0, 2)}`);
-      if (newVersions[newVersions.length - 1] !== latestVersion) {
+      if (!!newVersions && newVersions[newVersions.length - 1] !== latestVersion) {
         newestVersion = newVersions[newVersions.length - 1];
         break;
       }

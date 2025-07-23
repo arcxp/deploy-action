@@ -1,6 +1,6 @@
 {
   "name": "deploy-action",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "A GitHub Action which allows for deployments to the Arc XP platform.",
   "main": "src/index.cjs",
   "scripts": {
@@ -12,7 +12,12 @@
     "type": "git",
     "url": "git+https://github.com/arcxp/deploy-action.git"
   },
-  "keywords": ["github", "actions", "arcxp", "deploy"],
+  "keywords": [
+    "github",
+    "actions",
+    "arcxp",
+    "deploy"
+  ],
   "author": "Mike Stemle <mike.stemle@washpost.com>",
   "license": "MIT",
   "type": "commonjs",
@@ -21,21 +26,21 @@
   },
   "homepage": "https://github.com/arcxp/deploy-action#readme",
   "devDependencies": {
-    "@jest/globals": "^29.7.0",
-    "@types/jest": "^29.5.14",
-    "@types/node": "^22.15.21",
-    "esbuild": "^0.25.4",
-    "eslint": "^9.27.0",
-    "jest": "^29.7.0",
-    "jest-diff": "^29.7.0",
-    "jest-watcher": "^29.7.0",
-    "prettier": "^3.5.3"
+    "@jest/globals": "^30.0.5",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.1.0",
+    "esbuild": "^0.25.8",
+    "eslint": "^9.31.0",
+    "jest": "^30.0.5",
+    "jest-diff": "^30.0.5",
+    "jest-watcher": "^30.0.5",
+    "prettier": "^3.6.2"
   },
   "dependencies": {
     "@actions/core": "^1.11.1",
     "@actions/github": "^6.0.1",
     "@actions/http-client": "^2.2.3",
-    "@octokit/rest": "^21.1.1",
+    "@octokit/rest": "^22.0.0",
     "lodash": "^4.17.21",
     "to-readable-stream": "^4.0.0"
   }
