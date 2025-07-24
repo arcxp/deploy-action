@@ -42,11 +42,11 @@ const uploadArtifact = async ({
       },
     })
 
+    const responseText = (await response.text()) ?? "Unknown Error"
     if (!response.ok) {
-      core.setFailed(responseText)
+      throw Error(`Unable to upload artifact ${artifact}: ${responseText}`)
     }
 
-    const responseText = await response.text()
     core.debug(`Response for upload call: ${responseText}`)
     return bundleName
   } catch (error) {

@@ -23368,10 +23368,10 @@ var require_upload = __commonJS({
             Accept: "application/json"
           }
         });
+        const responseText = await response.text() ?? "Unknown Error";
         if (!response.ok) {
-          core2.setFailed(responseText);
+          throw Error(`Unable to upload artifact ${artifact}: ${responseText}`);
         }
-        const responseText = await response.text();
         core2.debug(`Response for upload call: ${responseText}`);
         return bundleName;
       } catch (error) {
