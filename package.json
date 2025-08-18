@@ -29,7 +29,7 @@
     "@jest/globals": "^30.0.5",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.1.0",
-    "esbuild": "^0.25.8",
+    "esbuild": "^0.25.9",
     "eslint": "^9.31.0",
     "jest": "^30.0.5",
     "jest-diff": "^30.0.5",
