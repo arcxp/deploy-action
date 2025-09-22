@@ -30,7 +30,7 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^24.1.0",
     "esbuild": "^0.25.8",
-    "eslint": "^9.31.0",
+    "eslint": "^9.36.0",
     "jest": "^30.0.5",
     "jest-diff": "^30.0.5",
     "jest-watcher": "^30.0.5",
