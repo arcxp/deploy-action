@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [1.1.6] - 2025-10-29
+
+This change prevents the attempted delete of the live bundle, if it is the oldest.
+
+### Changed
+
+- Dependencies updated
+- Remove live deployment from deployment selection
+
 ## [1.1.5] - 2025-07-23
 
 This is quick dependency update and bug fix release.
